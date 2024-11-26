@@ -37,7 +37,7 @@ class ReservationServiceImpTest {
         Flight flight = new Flight();
         flight.setId("fl");
         List<Seat> seats = new ArrayList<>();
-        Seat seat = new Seat("1","a1",flight);
+        Seat seat = new Seat("a1","avaiable",flight);
         seats.add(seat);
         flight.setSeat_map(seats);
         Reservation reservation = new Reservation();
@@ -51,6 +51,7 @@ class ReservationServiceImpTest {
         p.setReservation(reservation);
         listPas.add(p);
         reservation.setPassengers(listPas);
+        reservation.setFlight(flight);
 
 
         ReservationDto dto = new ReservationDto();
@@ -62,6 +63,7 @@ class ReservationServiceImpTest {
         dto.setPassengers(listPassengers);
         Mockito.when(flightRepository.findById(Mockito.anyString())).thenReturn(Optional.of(flight));
         Mockito.when(reservationRepository.findById(Mockito.anyString())).thenReturn(Optional.of(reservation));
+        Mockito.when(reservationRepository.save(reservation)).thenReturn(reservation);
     //     Mockito.when(reservationServiceImp.getReservation("res")).thenReturn(reservation);
     //    Mockito.when(reservationServiceImp.getFlight("fl")).thenReturn(flight);
         ReservationDto result = reservationServiceImp.putReservation(dto);
