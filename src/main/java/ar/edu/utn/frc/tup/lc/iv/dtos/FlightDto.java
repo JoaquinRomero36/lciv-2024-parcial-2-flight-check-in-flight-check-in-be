@@ -10,9 +10,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 import java.util.List;
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-@Builder
 public class FlightDto {
     private String id;
     private String aircraft;

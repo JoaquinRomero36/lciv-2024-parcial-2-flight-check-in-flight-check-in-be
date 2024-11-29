@@ -1,10 +1,14 @@
 package ar.edu.utn.frc.tup.lc.iv.services;
 
+import ar.edu.utn.frc.tup.lc.iv.dtos.AirportDto;
 import ar.edu.utn.frc.tup.lc.iv.dtos.FlightDto;
+import ar.edu.utn.frc.tup.lc.iv.dtos.SeatDto;
+import ar.edu.utn.frc.tup.lc.iv.entity.Airport;
 import ar.edu.utn.frc.tup.lc.iv.entity.Flight;
 import ar.edu.utn.frc.tup.lc.iv.entity.Seat;
 import ar.edu.utn.frc.tup.lc.iv.repository.AirportRepository;
 import ar.edu.utn.frc.tup.lc.iv.repository.FligthRepository;
+import ar.edu.utn.frc.tup.lc.iv.repository.SeatRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -24,6 +28,8 @@ class FligthServiceImpTest {
     private FligthRepository fligthRepository;
     @Mock
     private AirportRepository airportRepository;
+    @Mock
+    private SeatRepository seatRepository;
     @InjectMocks
     private FligthServiceImp fligthServiceImp;
 
@@ -49,6 +55,23 @@ class FligthServiceImpTest {
         FlightDto dto = new FlightDto();
         dto.setId(fligth.getId());
         dto.setSeatMap(new ArrayList<>());
+
+        AirportDto airDto = new AirportDto();
+        airDto.setCode("asd");
+        airDto.setName("asd");
+        airDto.setLocation("panamá");
+        dto.setAirport(airDto);
+
+        SeatDto seatDto = new SeatDto();
+        seatDto.setSeat("a1");
+        seatDto.setStatus("available");
+        List<SeatDto> seats = new ArrayList<>();
+        seats.add(seatDto);
+        dto.setSeatMap(seats);
+
+        Seat seat = new Seat();
+
+        Mockito.when(seatRepository.save(seat)).thenReturn(seat);
 
         List<Seat> list = new ArrayList<>();
         fligth.setSeat_map(list);

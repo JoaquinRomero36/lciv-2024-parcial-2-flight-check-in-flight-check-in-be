@@ -34,6 +34,5 @@ public class ReservationController {
         } catch (Exception e){
             return ResponseEntity.badRequest().build();
         }
-
     }
 }

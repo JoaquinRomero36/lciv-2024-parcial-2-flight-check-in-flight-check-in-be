@@ -32,10 +32,9 @@ public class FligthServiceImp implements FligthSrevice{
     @Override
     public Flight createFlight(FlightDto flight) {
         Flight fli = new Flight();
+
         Airport airport = new Airport();
-
-
-        fli.setAirport(airport);
+        fli.setAircraft(flight.getAircraft());
         fli.setId(flight.getId());
         fli.setDeparture(flight.getDeparture());
 
@@ -43,7 +42,7 @@ public class FligthServiceImp implements FligthSrevice{
             airport.setCode(flight.getAirport().getCode());
             airport.setName(flight.getAirport().getName());
             airport.setLocation(flight.getAirport().getLocation());
-            airportRepository.save(airport);
+           fli.setAirport(airportRepository.save(airport));
         }
 
         List<Seat> listSeat = new ArrayList<>();

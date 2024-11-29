@@ -7,9 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-@Builder
 public class ReservationDto {
     private String id;
     private String status;

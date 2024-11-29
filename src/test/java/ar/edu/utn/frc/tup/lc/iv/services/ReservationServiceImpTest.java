@@ -23,6 +23,8 @@ class ReservationServiceImpTest {
     private  ReservationRepository reservationRepository;
     @Mock
     private  FligthRepository flightRepository;
+    @Mock
+    private FligthServiceImp fligthService;
     @InjectMocks
     private ReservationServiceImp reservationServiceImp;
 
@@ -77,5 +79,47 @@ class ReservationServiceImpTest {
         Mockito.when(reservationRepository.findById("a")).thenReturn(Optional.of(res));
         Reservation result = reservationServiceImp.getReservation("a");
         assertEquals(res.getId(), result.getId());
+    }
+
+    @Test
+    void postRservation() {
+        ReservationDto reservadto = new ReservationDto();
+        reservadto.setId("a");
+        reservadto.setStatus("READY-TO-CHECK-IN");
+
+        Flight flight = new Flight();
+        flight.setId("aaa");
+        List<Seat> seats = new ArrayList<>();
+        seats.add(new Seat("1B","avaiable",flight));
+        flight.setSeat_map(seats);
+        Mockito.when(flightRepository.findById("aaa")).thenReturn(Optional.of(flight));
+
+        reservadto.setFlight("aaa");
+        List<PassengersDto> listPas = new ArrayList<>();
+        PassengersDto p = new PassengersDto();
+        p.setName("pablo");
+        p.setSeat("1B");
+        listPas.add(p);
+        reservadto.setPassengers(listPas);
+        Reservation res = new Reservation();
+        res.setId("a");
+     //   Mockito.when(reservationRepository.save(res)).thenReturn(res);
+        Mockito.when(reservationRepository.save(Mockito.any(Reservation.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        Reservation response = reservationServiceImp.postRservation(reservadto);
+        assertEquals("a", response.getId());
+    }
+
+    @Test
+    void testThrowErrorWhenFlightNotFound() {
+
+        ReservationDto reservationDto = new ReservationDto();
+        reservationDto.setFlight("invalid-flight-id");
+        Mockito.when(fligthService.getFlight("invalid-flight-id")).thenReturn(null);
+
+        Error exception = assertThrows(Error.class, () -> {
+            reservationServiceImp.postRservation(reservationDto);
+        });
+
+        assertEquals("No se encontro la flight", exception.getMessage());
     }
 }

@@ -9,9 +9,8 @@ import lombok.NoArgsConstructor;
  * Error API DTO class.
  */
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-@Builder
+
 public class ErrorApi {
 
     /**

@@ -28,7 +28,7 @@ public class ReservationServiceImp implements ReservationService {
         Reservation reservationEntity = getReservation(reservationDto.getId());
         Flight flightEntity = getFlight(reservationDto.getFlight());
         if(!reservationEntity.getStatus().equals("READY-TO-CHECK-IN")){
-            throw new Error("no esta disponible");
+            throw new Error("La reserva no esta disponible");
         }
         reservationEntity.setStatus("CHECK-IN");
 
@@ -78,13 +78,10 @@ public class ReservationServiceImp implements ReservationService {
     public Reservation postRservation(ReservationDto reservationDto) {
 
         Flight fli = getFlight(reservationDto.getFlight());
-        if(fli == null){
-            throw new Error("no se encontro el vuelo");
-        }
 
         Reservation reservation = new Reservation();
         reservation.setId(reservationDto.getId());
-        reservation.setFlight(reservation.getFlight());
+        reservation.setFlight(fli);
         reservation.setStatus("READY-TO-CHECK-IN");
         List<Passenger> listPasageros = new ArrayList<>();
         reservation.setPassengers(listPasageros);
