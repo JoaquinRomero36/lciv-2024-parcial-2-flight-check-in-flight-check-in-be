@@ -11,6 +11,7 @@ import ar.edu.utn.frc.tup.lc.iv.repository.SeatRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +37,9 @@ public class FligthServiceImp implements FligthSrevice{
         Airport airport = new Airport();
         fli.setAircraft(flight.getAircraft());
         fli.setId(flight.getId());
+        if(!timeValidator(flight.getDeparture())){
+            return null;
+        }
         fli.setDeparture(flight.getDeparture());
 
         if(flight.getAirport() != null){
@@ -56,5 +60,13 @@ public class FligthServiceImp implements FligthSrevice{
         }
         fli.setSeat_map(listSeat);
         return fligthRepository.save(fli);
+    }
+
+    public boolean timeValidator(LocalDateTime time){
+        LocalDateTime now = LocalDateTime.now().minusHours(6L);
+        if(time.isBefore(now)){
+            return true;
+        }
+        return false;
     }
 }

@@ -16,6 +16,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -55,6 +56,8 @@ class FligthServiceImpTest {
         FlightDto dto = new FlightDto();
         dto.setId(fligth.getId());
         dto.setSeatMap(new ArrayList<>());
+        LocalDateTime timepo = LocalDateTime.now().minusHours(7);
+        dto.setDeparture(timepo);
 
         AirportDto airDto = new AirportDto();
         airDto.setCode("asd");
@@ -75,8 +78,12 @@ class FligthServiceImpTest {
 
         List<Seat> list = new ArrayList<>();
         fligth.setSeat_map(list);
-        //Mockito.when(AirportRepository.save(fligth.getAirport()));
         Flight result = fligthServiceImp.createFlight(dto);
         assertNull(result);
+
+        FlightDto dto2 = dto;
+        dto2.setDeparture(timepo.plusHours(4));
+        Flight result2 = fligthServiceImp.createFlight(dto2);
+        assertNull(result2);
     }
 }

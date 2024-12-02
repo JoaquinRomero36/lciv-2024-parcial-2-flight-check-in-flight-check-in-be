@@ -14,6 +14,7 @@ import org.springframework.boot.autoconfigure.flyway.FlywayAutoConfiguration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,5 +57,11 @@ class FlightControllerTest {
         Mockito.when(fligthService.createFlight(dto)).thenReturn(new Flight());
         ResponseEntity<Flight>  response = flightController.postfligth(dto);
         assertEquals(HttpStatus.OK, response.getStatusCode());
+
+        FlightDto dto2 = dto;
+        dto.setDeparture(LocalDateTime.now().minusHours(2));
+        Mockito.when(fligthService.createFlight(dto2)).thenReturn(null);
+        ResponseEntity<Flight>  response2 = flightController.postfligth(dto);
+        assertEquals(HttpStatus.BAD_REQUEST, response2.getStatusCode());
     }
 }

@@ -24,6 +24,9 @@ public class FlightController {
     @PostMapping()
     public ResponseEntity<Flight> postfligth(@RequestBody FlightDto fligth) {
         Flight fligthPosted = flightService.createFlight(fligth);
+        if(fligthPosted == null) {
+            return ResponseEntity.badRequest().build();
+        }
         return ResponseEntity.ok(fligthPosted);
     }
 }
